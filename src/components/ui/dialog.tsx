@@ -1,0 +1,3 @@
+'use client';
+import * as D from '@radix-ui/react-dialog';import {X} from 'lucide-react';import type {ReactNode} from 'react';
+export function Modal({open,close,title,children,wide=false}:{open:boolean;close:()=>void;title:string;children:ReactNode;wide?:boolean}){return <D.Root open={open} onOpenChange={v=>!v&&close()}><D.Portal><D.Overlay className="modal-overlay"/><D.Content aria-describedby={undefined} className={`modal ${wide?'wide':''}`}><div className="modal-title"><D.Title>{title}</D.Title><D.Close className="icon-btn" aria-label="Close dialog"><X size={20}/></D.Close></div>{children}</D.Content></D.Portal></D.Root>}

@@ -1,0 +1,5 @@
+import {createClient,type SupabaseClient} from '@supabase/supabase-js';
+let client:SupabaseClient|null=null;
+export async function getClient(){if(client)return client;const r=await fetch('/api/config');if(!r.ok)return null;const c=await r.json();if(c.url&&c.key)client=createClient(c.url,c.key,{auth:{flowType:'pkce',detectSessionInUrl:true}});return client;}
+export async function api(path:string,method='GET',body?:unknown){const c=await getClient();const {data}=c?await c.auth.getSession():{data:{session:null}};const r=await fetch(`/api/${path}`,{method,headers:{'Content-Type':'application/json',...(data.session?{Authorization:`Bearer ${data.session.access_token}`}:{})},...(body?{body:JSON.stringify(body)}:{})});const result=await r.json();if(!r.ok){const e=new Error(result.error||'Request failed') as Error&{status:number};e.status=r.status;throw e;}return result;}
+export function download(name:string,body:string,type='application/json'){const url=URL.createObjectURL(new Blob([body],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}

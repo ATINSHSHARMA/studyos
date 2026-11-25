@@ -1,0 +1,9 @@
+import type {ReactNode} from 'react';import {BookOpen,Check} from 'lucide-react';import type {Workspace} from '@/lib/model';
+export type View='Dashboard'|'My exams'|'Syllabus'|'Planner'|'Test center'|'PYQ shuffle'|'Focus room'|'Notes'|'Analytics'|'Settings'|'Admin';
+export type Props={state:Workspace;update:(f:(s:Workspace)=>Workspace)=>void;go:(v:View)=>void;notify:(s:string)=>void};
+export function Heading({title,sub,children}:{title:string;sub:string;children?:ReactNode}){return <div className="heading"><div><h1>{title}</h1><p>{sub}</p></div><div className="actions">{children}</div></div>}
+export function Panel({title,sub,action,children,className=''}:{title?:string;sub?:string;action?:ReactNode;children:ReactNode;className?:string}){return <section className={`panel ${className}`}>{title&&<div className="panel-head"><div><h2>{title}</h2>{sub&&<p>{sub}</p>}</div>{action}</div>}{children}</section>}
+export function Field({label,children}:{label:string;children:ReactNode}){return <label className="field"><span>{label}</span>{children}</label>}
+export function Empty({title,sub,children}:{title:string;sub:string;children?:ReactNode}){return <div className="empty"><BookOpen size={30}/><h3>{title}</h3><p>{sub}</p>{children}</div>}
+export function Checkbox({checked,label,onClick}:{checked:boolean;label:string;onClick:()=>void}){return <button className={`check ${checked?'checked':''}`} aria-label={label} aria-pressed={checked} onClick={onClick}>{checked&&<Check size={13}/>}</button>}
+export function Ring({value}:{value:number}){return <div className="ring"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" fill="none" stroke="#e6eeea" strokeWidth="4"/><circle cx="30" cy="30" r="25" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeDasharray={`${157*value/100} 157`} transform="rotate(-90 30 30)"/></svg><strong>{value}<small>%</small></strong></div>}
